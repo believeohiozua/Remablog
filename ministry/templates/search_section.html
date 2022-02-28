@@ -1,0 +1,45 @@
+{% if done%}
+
+<hr>
+<p class="h4 text-center">
+    <u>
+        Search Results
+    </u>
+</p>
+<ol class="col-md-6 mx-auto">
+    {% for search in search_result%}
+    <li class="text-justify border-bottom">
+        {% if search.title%}
+        <a href="{{search.get_absolute_url}}" class="h6">
+            {{search.title|upper}}
+        </a>
+        {% elif search.quote%}
+        <a href="{{search.get_absolute_url}}" class="h6">
+            {{search.quote|truncatechars:140}}
+        </a>
+        {%endif%}
+    </li>
+    {%empty%}
+    <p class="text-center h6 text-danger">
+        No Match for you Search..!
+    </p>
+    {%endfor%}
+</ol>
+
+{%endif%}
+
+
+{%if request.path == "/" and contact%}
+<p class="p-y-2 text-success text-center">
+    Your Message Has Been Sent!
+</p>
+{%endif%}
+
+
+{% if request.path == "/testimony/" and testimony %}
+<p class="p-y-2 text-success text-center">
+    Your Testimony has been Sent! <br>
+    We will Review and Publish it <br>
+    GOD BLESSS YOU
+</p>
+{%endif%}

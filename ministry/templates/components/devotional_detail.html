@@ -1,0 +1,204 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% load social_share %}
+{% block content %}
+
+
+
+<div class="container" style="padding-top: 7em;">
+    <div class="">
+        <div class="col-lg-12">
+            <div class="">
+                <article class="row single-post no-gutters col-md-12 content card-header" style="border-radius: 20px;"
+                    data-aos="zoom-in" data-aos-delay="100">
+                    <div class="py-3">
+                        <header>
+                            <div class="font-weight-bold text-center py-2">
+                                <span class="text-center">
+                                    <p class="text-info h3">
+                                        <b>{{devotional.title|upper}}</b></p>
+                                    <ul style="list-style: none;">
+                                        <li class="h6 text-center text-body"><b>BIBLE READING:
+                                            </b>{{devotional.bible_reading}}</li>
+                                        <li class="h6 text-center text-body"><b>MEMORY VERSE:
+                                            </b>{{devotional.memory_verse}}</li>
+                                        <li class="h6 text-center">
+                                            <small>
+                                                __<i class="la la-eye"></i>
+                                                Read by {{ devotional.view_count }}
+                                                Person{{devotional.view_count|pluralize}}__
+                                            </small>
+                                        </li>
+                                    </ul>
+                                </span>
+                            </div>
+                        </header>
+                        <div class="image-wrapper float-left pr-3">
+                            <img class="img-rounded img-responsive img-thumbnail" src=" {% if post.thumbnail %}
+                             {{ devotional.caption_picture.url }}
+                             {% else %}
+                             {% static 'images/logo.jpg' %}
+                             {% endif %}" alt="gist" id="devotional_img" class="img-fluid"
+                                style="width: 15em; height: 15em;" />
+                        </div>
+                        <div class="single-post-content-wrapper text-left">
+                            <hr>
+                            <p class="h4">
+                                {{ devotional.devotion|safe|linebreaksbr }}
+                            </p>
+
+                            <footer class="mx-auto text-center">
+                                <hr>
+                                <table class="float-left">
+                                    <tr class="row">
+                                        &ensp;&ensp;<td class="text-secondary pl-5">Share <i class="la la-share"></i>
+                                        </td>
+                                        <td>&ensp;</td>
+                                        <td class="text-small">
+                                            {% post_to_facebook devotional.get_absolute_url '<i class="text-small btn btn-primary btn-xs la la-facebook"></i>'%}
+                                        </td>
+                                        <td>&ensp;</td>
+                                        <td class="text-small">
+                                            {% post_to_twitter 'New post: {{devotional.title}} @' post.get_absolute_url '<i class="btn btn-info btn-xs la la-twitter"></i>'%}
+                                        </td>
+                                        <td>&ensp;</td>
+                                        <td class="text-small">
+                                            {% post_to_linkedin devotional.devotion|striptags|truncatechars:200 post.get_absolute_url '<i class="btn btn-primary btn-xs la la-linkedin"></i>' %}
+                                        </td>
+                                        <td>&ensp;</td>
+                                        <td class="text-small"> <a
+                                                href="whatsapp://send?text=*{{devotional.title}}:* {{devotional.devotion|striptags|truncatechars:200 }} See More@ http://www.rhematose.org{{devotional.get_absolute_url}}"
+                                                data-action="share/whatsapp/share" target="_blank"> <i
+                                                    class="btn btn-success btn-xs la la-whatsapp"></i>
+                                            </a>
+                                        </td>
+                                        <td>&ensp;</td>
+                                    </tr>
+                                </table>
+                            </footer>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-lg-12 py-4" data-aos="fade-right" data-aos-delay="100">
+            {%if devotional.get_reviews%}
+            <p class="h3 text-info"> Commnets</p>
+            <div id="devotional_reviews_section">
+
+            </div>
+            {% for reviews in devotional.get_reviews %}
+            <div class="col-10 mx-auto">
+                <ul class="border-top border-bottom border-info" style="list-style: none; border-radius: 10px;">
+
+                    <li class="text-left mx-auto">
+                        <b class="h6 font-weight-bold">{{reviews.full_names|title}}</b>
+                        <br>
+                        <small class="">
+                            {{reviews.content}}
+                        </small>
+                        {%if reviews.replyed%}
+                        <div class="h6 ml-5">
+                            <span>
+                                <b class="h6 font-weight-bold">{{reviews.user|title}}</b>
+                            </span>
+                            <br>
+                            <div class="border rounded text-left p-1">
+                                <small class="text-muted">
+                                    {{reviews.reply}}
+                                </small>
+                                {%if reviews.replyed and request.user.is_authenticated%}
+                                <br><a
+                                    href="/secretsof_the_secretplace_admin/ministry/devotionalreview/{{reviews.pk}}/change/">edith
+                                    reply</a>
+                                {%endif%}
+                            </div>
+                        </div>
+                        {%elif not reviews.replyed and request.user.is_authenticated%}
+                        <details style="color: #14b3fde3;">
+                            <summary class="h6 text-success">reply</summary>
+                            <form method="POST" action="." enctype="multipart/form-data" class="form-horizontal">
+                                {% csrf_token %}
+                                {{devotionalreviewreplyForm}}
+                                <input type="hidden" name="target_review" value="{{reviews.pk}}">
+                                <button class="btn btn-outline-info" type="submit">reply</button>
+                            </form>
+                        </details>
+                        {%endif%}
+                    </li>
+                </ul>
+            </div>
+            {%endfor%}
+            {%endif%}
+        </div>
+
+        <div class="col-lg-8 h6 mx-auto" data-aos="fade-up" data-aos-delay="200">
+            <div class="py-2">
+                <img src="{%static 'images/comment.gif'%}" alt="">
+                <span class="text-info">
+                    &ensp; Please Drop a Comment
+                </span>
+            </div>
+            <form method="POST" action="." enctype="multipart/form-data" class="h6">
+                {% csrf_token %}
+                {{form|crispy}}
+                <div class="text-center">
+                    <button id="d_review" class="btn btn-outline-info" type="submit">Comment</button>
+                </div>
+            </form>
+            <!-- <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+            <script type="text/javascript">
+                $(document).ready(function (event) {
+                    $(document).on('click', '#d_review', function (event) {
+                        event.preventDefault();
+                        document.getElementById('d_review').innerHTML = "posting...";
+                        document.getElementById('d_review').className = "btn btn-info disabled";
+                        var full_names = document.querySelector("input[name=full_names]").value;
+                        var phone_number = document.querySelector("input[name=phone_number]").value;
+                        var email = document.querySelector("input[name=email]").value;
+                        var content = document.querySelector("textarea[name=content]").value;
+                        console.log(full_names,
+                            email,
+                            phone_number,
+                            content)
+                        $.ajax({
+                            type: 'POST',
+                            url: '{%url "devotional-detail" slug=devotional.slug %}',
+                            data: {
+                                'full_names': full_names,
+                                'email': email,
+                                'phone_number': phone_number,
+                                'content': content,
+                                'csrfmiddlewaretoken': '{{ csrf_token}}'
+                            },
+                            dataType: 'json',
+                            success: function (response) {
+                                document.getElementById('d_review').innerHTML = "Comment";
+                                document.getElementById('d_review').className = "btn btn-outline-info";
+                                var full_names = document.querySelector("input[name=full_names]").value = '';
+                                var email = document.querySelector("input[name=email]").value = '';
+                                var phone_number = document.querySelector("input[name=phone_number]").value = '';
+                                var content = document.querySelector("textarea[name=content]").value = '';
+                                // $("#show").className = "";
+                                $('#devotional_reviews_section').html(response['form']);
+                                console.log($('#devotional_reviews_section').html(response['form']));
+                            },
+                            error: function (rs, e) {
+                                console.log(rs.responseText);
+                            },
+                        });
+                    });
+                });
+            </script> -->
+        </div>
+    </div>
+
+
+
+</div>
+</div>
+
+{% endblock content %}

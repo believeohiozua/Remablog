@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tag88s %}
+{% load widget_tweak55s %}
+{% load i18n %}
+{% load static %}
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block content %}
+
+
+<section class="intro py-5">
+  <div class="container mt-5">
+    <div class="col-md-6 mx-auto border border-info shadow rounded-circle">
+      <div class="form-group  p-5">
+        <p class="text-center h3">{% trans "Sign In" %}</p>
+        <form class="login" method="POST" action="{% url 'account_login' %}">
+          
+         
+          <br />
+          <div class="text-center">
+            <button class="primaryAction btn btn-primary btn-sm" type="submit">{% trans "Sign In" %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock%}

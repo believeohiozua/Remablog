@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% load social_share %}
+{% block content %}
+<section style="padding-top: 7em;">
+    <div class="container py-5" data-aos="zoom-in" data-aos-delay="100">
+        <div class="row">
+            <div class="col-lg-6">
+                <img src="
+                    {%if quote.picture%}
+                    {{quote.picture.url}}
+                    {%else%}
+                    {% static 'images/prophet.jpg'%}
+                    {%endif%}
+                    " alt="" class="img-fluid">
+            </div>
+            <div class="col-lg-6">
+                <p class="text-justify">
+                    {{quote.quote}}
+                </p>
+                <div class="mx-auto">
+                    <footer class="border-top">
+                        <table class="float-right pr-5">
+                            <tr class="row">
+                                <td class="text-secondary">Share <i class="la la-share"></i></td>
+                                <td>&ensp;</td>
+                                <td class="text-small">
+                                    {% post_to_facebook quote.quote '<i class="rounded-circle h4 text-small btn btn-primary btn-xs la la-facebook"></i>'%}
+                                </td>
+                                <td>&ensp;</td>
+                                <td class="text-small">
+                                    {% post_to_twitter 'Word For Today: {{word_for_today.memory_verse}} {{quote.quote}} ' www.rhematose.org '<i class="rounded-circle h4 btn btn-outline-info btn-xs la la-twitter"></i>'%}
+                                </td>
+                                <td>&ensp;</td>
+                                <td class="text-small">
+                                    {% post_to_linkedin quote.quote www.rhematose.org '<i class="rounded-circle h4 btn btn-outline-primary btn-xs la la-linkedin"></i>' %}
+                                </td>
+                                <td>&ensp;</td>
+                                <td class="text-small"> <a
+                                        href="whatsapp://send?text=*SPECIAL QUOTE by Prophet Phrancis Kingson*: {{quote.quote|striptags}}See More@ http://www.rhematose.org"
+                                        data-action="share/whatsapp/share" target="_blank"> <i
+                                            class="rounded-circle h4 btn btn-outline-success btn-xs la la-whatsapp"></i>
+                                    </a>
+                                </td>
+                                <td>&ensp;</td>
+                                <td>&ensp;</td>
+                            </tr>
+                        </table>
+                    </footer>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock content %}

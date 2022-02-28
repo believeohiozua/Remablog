@@ -1,0 +1,138 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% load social_share %}
+{% load pagination_tags %}
+{% block content %}
+
+
+<section class="portfolio" id="programme" style="padding-top:7em">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="section-title">
+            <h2>PROGRAMMES</h2>
+            <p class="text-justify">
+                {% if Pagetag.programme_intro%}
+                {{Pagetag.programme_intro}}
+                {%else%}
+                <br> <i class=" text-danger">programme intro</i>
+                {%endif%}
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 d-flex justify-content-center">
+                <ul id="portfolio-flters">
+                    <li data-filter="*" class="filter-active">All</li>
+                    <li data-filter=".filter-course">Course</li>
+                    <li data-filter=".filter-seminar">Seminar</li>
+                    <li data-filter=".filter-workshop">Workshop</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
+            {%if programme_list%}
+            {% for prog in programme_list%}
+            {% for category in prog.programme_category.all %}
+            {%if category|safe == 'course' %}
+            <div class="col-lg-4 col-md-6 portfolio-item filter-course">
+                <div class="portfolio-wrap">
+                    <img src=" {%if prog.prog_image%}
+                            {{prog.prog_image.url}}
+                            {%else%}
+                            {% static 'images/logo.jpg' %}
+                            {%endif%}" class="img-fluid" id="prog_img" alt="">
+                    <div class="portfolio-info">
+                        <h6 class="font-weight-bold">{{prog.title}}</h6>
+                        <p>Course</p>
+                        <div class="portfolio-links">
+                            <a href="{%if prog.prog_image%}
+                                    {{prog.prog_image.url}}
+                                    {%else%}
+                                    {% static 'images/logo.jpg' %}
+                                    {%endif%}" data-gall="portfolioGallery" class="venobox" title="{{prog.title}}"><i
+                                    class="la la-eye"></i></a>
+                            <a href="{{prog.get_absolute_url}}" title="More Details"><i class="bx bx-link"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%endif%}
+            {%if category|safe == 'seminar' %}
+            <div class="col-lg-4 col-md-6 portfolio-item filter-seminar">
+                <div class="portfolio-wrap">
+                    <img src=" {%if prog.prog_image%}
+                            {{prog.prog_image.url}}
+                            {%else%}
+                            {% static 'images/logo.jpg' %}
+                            {%endif%}" class="img-fluid" id="prog_img" alt="">
+                    <div class="portfolio-info">
+                        <h6 class="font-weight-bold">{{prog.title}}</h6>
+                        <p>Seminar</p>
+                        <div class="portfolio-links">
+                            <a href="{%if prog.prog_image%}
+                                    {{prog.prog_image.url}}
+                                    {%else%}
+                                    {% static 'images/logo.jpg' %}
+                                    {%endif%}" data-gall="portfolioGallery" class="venobox" title="{{prog.title}}"><i
+                                    class="la la-eye"></i></a>
+                            <a href="{{prog.get_absolute_url}}" title="More Details"><i class="bx bx-link"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%endif%}
+            {%if category|safe == 'workshop' %}
+            <div class="col-lg-4 col-md-6 portfolio-item filter-workshop">
+                <div class="portfolio-wrap">
+                    <img src=" {%if prog.prog_image%}
+                            {{prog.prog_image.url}}
+                            {%else%}
+                            {% static 'images/logo.jpg' %}
+                            {%endif%}" class="img-fluid" id="prog_img" alt="">
+                    <div class="portfolio-info">
+                        <h6 class="font-weight-bold">{{prog.title}}</h6>
+                        <p>workshop</p>
+                        <div class="portfolio-links">
+                            <a href="{%if prog.prog_image%}
+                                    {{prog.prog_image.url}}
+                                    {%else%}
+                                    {% static 'images/logo.jpg' %}
+                                    {%endif%}" data-gall="portfolioGallery" class="venobox" title="{{prog.title}}"><i
+                                    class="la la-eye"></i></a>
+                            <a href="{{prog.get_absolute_url}}" title="More Details"><i class="bx bx-link"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%endif%}
+            {%endfor%}
+            {%endfor%}
+            {%else%}
+            <div class="col-lg-12 col-md-12 portfolio-item filter-web">
+                <div class="portfolio-wrap">
+                    <div class="mx-auto text-center h4 text-primary p-3">
+                        programmes will be Published Soon!
+                    </div>
+                </div>
+            </div>
+            {%endif%}
+
+
+        </div>
+    </div>
+    </div>
+    <div class="container py-3 d-block">
+        <div class="row">
+            <div class="mx-auto">
+                <div class="  text-center">
+                    {% paginate %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

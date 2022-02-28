@@ -1,0 +1,732 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load social_share %}
+{% load i18n %}
+{% block content %}
+
+<section class="container-fluid mx-1 border-bottom" style="padding-top: 7em;" id="home_top_sec">
+    <div class="row">
+        <div class="col-lg-7  order-2 order-lg-1 justify-content-center text-center mx-auto card-header shadow"
+            style="border-radius: 2em;">
+            <div>
+                {% if RhemaWordForToday %}
+                {% for word_for_today in RhemaWordForToday|slice:"1" %}
+                <article class="row single-post no-gutters content">
+                    <div class="">
+                        <div class="image-wrapper float-left pr-3">
+                            <div class="mx-auto text-center position-relative" id="badge_sec">
+                                <img src="{% static 'images/prophet.png'%}"
+                                    class="img-fluid rounded-circle img-thumbnail" alt="">
+                                <figcaption class="card-header text-center h5">
+                                    <span class="font-weight-bold" style="font-size: .6em;"> Prophet Phrancis
+                                        Kingson</span>
+                                    <br>
+                                    <small>
+                                        <i style="font-size: .7em;">founder Rhematos international</i>
+                                    </small>
+                                </figcaption>
+                            </div>
+                        </div>
+                        <div class="single-post-content-wrapper text-left">
+                            <p class="text-center h5 font-weight-bold text-dark">
+                                RHEMA WORD FOR TODAY!
+                            </p>
+                            <div class="h6">
+                                <p class="text-center">{{word_for_today.memory_verse|title}}</p>
+                                <p class="text-justify h6">
+                                    <span id="word_for_today_less">
+                                        {{word_for_today.content|truncatechars:965 }} &ensp;
+                                        <a href="javascript:void(0)" onclick="showDetail();"
+                                            class="text-successs font-weight-bold">
+                                            <i class="la la-angle-down"></i>
+
+                                        </a>
+
+                                    </span>
+                                    <span id="word_for_today_detail" class="d-none">
+                                        {{word_for_today.content}} &ensp;
+                                        <a href="javascript:void(0)" onclick="showLess();"
+                                            class="text-danger font-weight-bold">
+                                            <i class="la la-angle-up"></i>
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <footer class="border-top">
+                                <table class="float-right pr-5">
+                                    <tr class="row">
+                                        <td class="text-secondary">Share <i class="la la-share"></i></td>
+                                        <td>&ensp;</td>
+                                        <td class="text-small">
+                                            {% post_to_facebook word_for_today.content '<i class="rounded-circle h4 text-small btn btn-primary btn-xs la la-facebook"></i>'%}
+                                        </td>
+                                        <td>&ensp;</td>
+                                        <td class="text-small">
+                                            {% post_to_twitter 'Word For Today: {{word_for_today.memory_verse}} {{word_for_today.content}} ' www.rhematose.org '<i class="rounded-circle h4 btn btn-outline-info btn-xs la la-twitter"></i>'%}
+                                        </td>
+                                        <td>&ensp;</td>
+                                        <td class="text-small">
+                                            {% post_to_linkedin word_for_today.content|truncatechars:600 www.rhematose.org '<i class="rounded-circle h4 btn btn-outline-primary btn-xs la la-linkedin"></i>' %}
+                                        </td>
+                                        <td>&ensp;</td>
+                                        <td class="text-small"> <a
+                                                href="whatsapp://send?text=*{{word_for_today.memory_verse}}*: {{word_for_today.content|safe|truncatechars:600}}See More@ http://www.rhematose.org"
+                                                data-action="share/whatsapp/share" target="_blank"> <i
+                                                    class="rounded-circle h4 btn btn-outline-success btn-xs la la-whatsapp"></i>
+                                            </a>
+                                        </td>
+                                        <td>&ensp;</td>
+                                        <td>&ensp;</td>
+                                    </tr>
+                                </table>
+                            </footer>
+                        </div>
+                    </div>
+                </article>
+                {%endfor%}
+                {%endif%}
+            </div>
+        </div>
+        <div class="col-lg-5 order-1 order-lg-12 justify-content-center text-center mx-auto" id="pad_caro"
+            data-aos="fade-right" data-aos-delay="300">
+            <div class="home_fade_carusel_sec">
+                <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel"
+                    data-interval="5000">
+                    <div class="carousel-inner mx-auto">
+                        <div id="slid_img" class="carousel-item active">
+                            <div class="text-center mx-auto">
+                                <img class="" src="{% static 'images/badge.png'%}" id="slide_img" alt="First slide" />
+                            </div>
+                            <div class="carousel-caption" id="slide_cap1">
+                                <span class="font-weight-bold h6">OUR PURPOSE</span>
+                                <p class="text-center">
+                                    {% if Pagetag.devotion_slide%}
+                                <p id="word_tag">
+                                    {{Pagetag.devotion_slide|upper}}
+                                </p>
+                                {%else%}
+                                <br> <i class="text-danger">OUR PURPOSE</i>
+                                {%endif%}
+                                </p>
+                            </div>
+                        </div>
+                        <div id="slid_img" class="carousel-item">
+                            <div class="text-center mx-auto">
+                                <img class="img-fluid" src="{% static 'images/badge.png'%}" id="slide_img"
+                                    alt="First slide" />
+                            </div>
+                            <div class="carousel-caption" id="slide_cap2">
+                                <span class="font-weight-bold h6">OUR MANDATE</span>
+                                <p class="text-center">
+                                    {% if Pagetag.quote_slide%}
+                                <p id="word_tag">
+                                    {{Pagetag.quote_slide|upper}}
+                                </p>
+                                {%else%}
+                                <br> <i class="text-danger">quote slide</i>
+                                {%endif%}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="carousel-item" id="slide_3">
+                            <div class="text-center mx-auto">
+                                <img class="img-fluid" src="{% static 'images/badge.png'%}" id="slide_img"
+                                    alt="First slide" />
+                            </div>
+                            <div class="carousel-caption" id="slide_cap3">
+                                <span class="font-weight-bold h6">OUR MANDATE</span>
+                                <p class="text-center">
+                                    {% if Pagetag.training_slide%}
+                                <p id="word_tag">
+                                    {{Pagetag.training_slide|upper}}
+                                </p>
+                                {%else%}
+                                <br> <i class="text-danger">training slide</i>
+                                {%endif%}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="carousel-item" id="slide_4">
+                            <div class="text-center mx-auto">
+                                <img class="img-fluid" src="{% static 'images/badge.png'%}" id="slide_img"
+                                    alt="First slide" />
+                            </div>
+                            <div class="carousel-caption" id="slide_cap4">
+                                <span class="font-weight-bold h6">OUR MANDATE</span>
+                                <p class="text-center">
+                                    {% if Pagetag.prayer_slide%}
+                                <p id="word_tag">
+                                    {{Pagetag.prayer_slide|upper}}
+                                </p>
+                                {%else%}
+                                <br> <i class="text-danger">prayer slide</i>
+                                {%endif%}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                            data-slide="prev">
+                            <i class="la la-arrow-left font-weight-bold bg-info rounded-circle p-2"></i>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                            data-slide="next">
+                            <i class="la la-arrow-right font-weight-bold bg-info rounded-circle p-2"></i>
+                        </a>
+                    </div>
+                    <p>
+                        <!-- <i>__With: </i> Prophet Phrancis Kingson </p> -->
+                    <div class="text-center"><a href="https://api.whatsapp.com/send?phone=233244782996"
+                            class="btn btn-outline-info scrollto">Join Now ! <i class="la la-send"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main id="main">
+    <section id="about" class="about border p-1">
+        <div class="container" data-aos="zoom-in" data-aos-delay="100">
+            <div class="row">
+                <div class="text-center mx-auto py-2">
+                    <p class="text-center h3 font-weight-bold">RHEMATOSE INTERNATIONAL</p>
+                    <p class="px-1 text-justify text-sm-center">
+                        {% if Pagetag.about_us_intro%}
+                        {{Pagetag.about_us_intro}}
+                        {%else%}
+                        <br> <i class="text-danger">about us intro</i>
+                    <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum sequi deleniti ducimus eaque, hic
+                        consectetur ipsam. Eius a veritatis asperiores ut porro eveniet! Mollitia nisi perspiciatis
+                        porro nulla distinctio corrupti!</p>
+                    {%endif%}
+                    </p>
+                </div>
+                <div class="col-lg-6 icon-boxes align-items-stretch justify-content-center px-lg-5">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bxs-bullseye"></i></div>
+                        <h4 class="title">OUR VISION</h4>
+                        <p class="description text-justify">
+                            {% if Pagetag.our_vision%}
+                            {{Pagetag.our_vision|title|truncatechars:250}}
+                            {%else%}
+                            <br> <i class="text-danger">our vision</i>
+                            {%endif%}
+                        </p>
+                    </div>
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-analyse"></i></div>
+                        <h4 class="title">OUR MISSION</h4>
+                        <p class="description text-justify">
+                            {% if Pagetag.our_mission%}
+                            {{Pagetag.our_mission|title|truncatechars:250}}
+                            {%else%}
+                            <br> <i class="text-danger">our mission</i>
+                            {%endif%}
+                        </p>
+                    </div>
+
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-atom"></i></div>
+                        <h4 class="title">OUR MESSAGE</h4>
+                        <p class="description text-justify">
+                            {% if Pagetag.our_message%}
+                            {{Pagetag.our_message|title|truncatechars:250}}
+                            {%else%}
+                            <br> <i class="text-danger">our message</i>
+                            {%endif%}
+                        </p>
+                    </div>
+
+                    <div class="pt-3">
+                        <div class="row counters card-header" style="border-radius: 25px;;">
+                            <div class="col-lg-3 col-6 text-center border-right">
+                                <span data-toggle="counter-up">{{quotes_counter}}</span>
+                                <p>Quotes</p>
+                            </div>
+                            <div class="col-lg-3 col-6 text-center border-right">
+                                <span data-toggle="counter-up">{{seminars_counter}}</span>
+                                <p>Seminars</p>
+                            </div>
+                            <div class="col-lg-3 col-6 text-center border-right">
+                                <span data-toggle="counter-up">{{workshops_counter}}</span>
+                                <p>Workshops</p>
+                            </div>
+                            <div class="col-lg-3 col-6 text-center">
+                                <span data-toggle="counter-up">{{courses_counter}}</span>
+                                <p>Courses</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="col-xl-5 col-lg-6 justify-content-center video-box align-items-stretch  border-left rounded">
+                    <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" class="venobox play-btn mb-4"
+                        data-vbtype="video" data-autoplay="true"></a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="devotion" class="py-3 border-bottom" style="background-color: rgb(242 243 225 / 38%);">
+        <div class=" container">
+            <div class="row content">
+                <div class="col-lg-6 mx-auto text-center" data-aos="fade-right" data-aos-delay="100">
+                    <ul style="list-style: none;">
+                        <p class="h4"><u>SPIRIT DIVINE DEVOTIONAL</u></p>
+
+                        {% if devotional_of_the_day %}
+
+                        {% for devotional in devotional_of_the_day|slice:"1"%}
+                        <p class="text-center">
+                            <span>BY:{{devotional.user.first_name|upper}} {{devotional.user.last_name|upper}} </span>
+                            <br>
+                            <small>{{devotional.date}}</small>
+                        </p>
+                        <img src="
+                                {%if devotional.caption_picture%}
+                                {{devotional.caption_picture.url}}
+                                {%else%}
+                                {% static 'images/badge.png'%}
+                                {%endif%}
+                                " alt="" height="140" width="200" style="border-radius: 15px;">
+
+                        <li class="h4 text-center text-body"><b><a href="{{devotional.get_absolute_url}}"
+                                    class="text-dark">{{devotional.title|upper}}</a></b></li>
+                        {% if devotional.bible_reading %}
+                        <li class="h6 text-center text-body"><b>BIBLE READING: </b>{{devotional.bible_reading}}</li>
+                        {%endif%}
+                        {% if devotional.memory_verse %}
+                        <li class="h6 text-center text-body"><b>MEMORY VERSE: </b>{{devotional.memory_verse}}</li>
+                        {%endif%}
+                        <li class="h6 text-center">
+                            <small>
+                                __ <i class="la la-eye"></i>
+                                Read by {{ devotional.view_count }} Person{{devotional.view_count|pluralize}} __
+                            </small>
+                        </li>
+                        {%endfor%}
+                        {%else%}
+                        <img src="{% static 'images/badge.png'%}" alt="" height="140" width="200">
+                        <p class="h5 text-center text-info font-italic">Devotional will be made avalible Soon!</p>
+                        {%endif%}
+                    </ul>
+                </div>
+                <div class="col-lg-6 pt-4 pt-lg-0 border-left" data-aos="fade-left" data-aos-delay="200">
+                    {% if devotional_of_the_day %}
+                    {% for devotional in devotional_of_the_day%}
+                    <p class="text-justify">
+                        {{devotional.devotion|striptags|truncatechars:900}}
+                        <a href="{{devotional.get_absolute_url}}" class="text-info font-weight-bold">See more...</a>
+                    </p>
+                    {%endfor%}
+                    {%else%}
+                    <div class="h1 mx-auto text-center text-info col-12 my-auto p-5">
+                        <i class="spinner-grow"></i>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="quotes" class="services section-bg">
+        <div class="container" data-aos="fade-in" data-aos-delay="200">
+
+            <div class="section-title">
+                <p class="h2">SPECIAL QUOTES </p>
+                <sub class="h6"><i>by Prophet Phrancis Kingson</i></sub>
+                <p class="pt-2 text-lg-center text-justify">
+                    {% if Pagetag.special_quotes_intro%}
+                    {{Pagetag.special_quotes_intro|truncatechars:250}}
+                    <br>
+                    <i style="font-size: 10px;">
+                        (Click on the Side Photo to see Details)
+                    </i>
+                    {%else%}
+                    <br> <i class="text-danger">special quotes intro</i>
+                    {%endif%}
+                </p>
+            </div>
+            <div class="row">
+                {% if special_quotes%}
+                {% for quotes in special_quotes %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="icon-box">
+                        <div class="icon">
+                            <a href="{{quotes.get_absolute_url}}">
+                                <img src="
+                                {%if quotes.picture%}
+                                {{quotes.picture.url}}
+                                {%else%}
+                                {% static 'images/prophet.jpg'%}
+                                {%endif%}
+                                " height="50" width="50" id="quote_img" class="rounded-circle" alt="First slide" />
+                            </a>
+                        </div>
+                        <p class="description border-left pl-1 text-dark text-justify">
+                            {{quotes.quote|truncatechars:200}}
+                        </p>
+                    </div>
+                </div>
+                {%endfor%}
+                {%else%}
+                <div class="mx-auto text-center h4 text-success p-3">
+                    Quotes will be avalible Soon!
+                </div>
+                {%endif%}
+
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="portfolio" id="programme">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="section-title">
+                <h2>PROGRAMMES</h2>
+                <p class="text-lg-center text-justify">
+                    {% if Pagetag.programme_intro%}
+                    {{Pagetag.programme_intro}}
+                    {%else%}
+                    <br> <i class=" text-danger">programme intro</i>
+                    {%endif%}
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 d-flex justify-content-center">
+                    <ul id="portfolio-flters">
+                        <li data-filter="*" class="filter-active">All</li>
+                        <li data-filter=".filter-course">Course</li>
+                        <li data-filter=".filter-seminar">Seminar</li>
+                        <li data-filter=".filter-workshop">Workshop</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
+                {%if programmes%}
+                {% for prog in programmes%}
+                {% for category in prog.programme_category.all %}
+                {%if category|safe == 'course' %}
+                <div class="col-lg-4 col-md-6 portfolio-item filter-course">
+                    <div class="portfolio-wrap">
+                        <img src=" {%if prog.prog_image%}
+                                {{prog.prog_image.url}}
+                                {%else%}
+                                {% static 'images/logo.jpg' %}
+                                {%endif%}" class="img-fluid" id="prog_img" alt="">
+                        <div class="portfolio-info">
+                            <h6 class="font-weight-bold">{{prog.title}}</h6>
+                            <p>Course</p>
+                            <div class="portfolio-links">
+                                <a href="{%if prog.prog_image%}
+                                        {{prog.prog_image.url}}
+                                        {%else%}
+                                        {% static 'images/logo.jpg' %}
+                                        {%endif%}" data-gall="portfolioGallery" class="venobox"
+                                    title="{{prog.title}}"><i class="la la-eye"></i></a>
+                                <a href="{{prog.get_absolute_url}}" title="More Details"><i class="bx bx-link"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%endif%}
+                {%if category|safe == 'seminar' %}
+                <div class="col-lg-4 col-md-6 portfolio-item filter-seminar">
+                    <div class="portfolio-wrap">
+                        <img src=" {%if prog.prog_image%}
+                                {{prog.prog_image.url}}
+                                {%else%}
+                                {% static 'images/logo.jpg' %}
+                                {%endif%}" class="img-fluid" id="prog_img" alt="">
+                        <div class="portfolio-info">
+                            <h6 class="font-weight-bold">{{prog.title}}</h6>
+                            <p>Seminar</p>
+                            <div class="portfolio-links">
+                                <a href="{%if prog.prog_image%}
+                                        {{prog.prog_image.url}}
+                                        {%else%}
+                                        {% static 'images/logo.jpg' %}
+                                        {%endif%}" data-gall="portfolioGallery" class="venobox"
+                                    title="{{prog.title}}"><i class="la la-eye"></i></a>
+                                <a href="{{prog.get_absolute_url}}" title="More Details"><i class="bx bx-link"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%endif%}
+                {%if category|safe == 'workshop' %}
+                <div class="col-lg-4 col-md-6 portfolio-item filter-workshop">
+                    <div class="portfolio-wrap">
+                        <img src=" {%if prog.prog_image%}
+                                {{prog.prog_image.url}}
+                                {%else%}
+                                {% static 'images/logo.jpg' %}
+                                {%endif%}" class="img-fluid" id="prog_img" alt="">
+                        <div class="portfolio-info">
+                            <h6 class="font-weight-bold">{{prog.title}}</h6>
+                            <p>workshop</p>
+                            <div class="portfolio-links">
+                                <a href="{%if prog.prog_image%}
+                                        {{prog.prog_image.url}}
+                                        {%else%}
+                                        {% static 'images/logo.jpg' %}
+                                        {%endif%}" data-gall="portfolioGallery" class="venobox"
+                                    title="{{prog.title}}"><i class="la la-eye"></i></a>
+                                <a href="{{prog.get_absolute_url}}" title="More Details"><i class="bx bx-link"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%endif%}
+                {%endfor%}
+                {%endfor%}
+                {%else%}
+                <div class="col-lg-12 col-md-12 portfolio-item filter-web">
+                    <div class="portfolio-wrap">
+                        <div class="mx-auto text-center h4 text-primary p-3">
+                            programmes will be Published Soon!
+                        </div>
+                    </div>
+                </div>
+                {%endif%}
+            </div>
+            {%if programmes%}
+            <div class="text-center text-white col-md-12 mx-auto pb-2">
+                <a class="text-info h6" href="/programme/">SEE MORE...</a>
+            </div>
+            {%endif%}
+        </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials section-bg mx-auto ">
+        <div class="container" data-aos="fade-right">
+            <div class="text-center card-header p-1 rounded shadow text-white border-bottom">
+                <div class="section-title text-lg-center text-justify" data-aos="fade-right">
+                    <h2 class="text-white">TESTIMONIES</h2>
+                    {% if Pagetag.testimony_intro%}
+                    {{Pagetag.testimony_intro}}
+                    {%else%}
+                    <p><i>We Overcame by the Blood of the Lamb and by the words of our Testimonies</i></p>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                    <div class="owl-carousel testimonials-carousel">
+                        {% if testimonies%}
+                        {%for testimony in testimonies%}
+                        <div class="testimonial-item">
+                            <p>
+                                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                {{testimony.your_testimony|truncatechars:210}}
+                                <a href="{{testimony.get_absolute_url}}" class="text-info">
+                                    see more..
+                                </a>
+                                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                            </p>
+                            <img src="
+                            {%if testimony.add_a_photo%}
+                            {{testimony.add_a_photo.url}}
+                            {%else%}                           
+                            {% static 'images/logo.jpg'%}
+                            {%endif%}
+                            " class="testimonial-img" alt="">
+                            <a href="{{testimony.get_absolute_url}}" class="text-white">
+                                <h3>{{testimony.full_names}}</h3>
+                            </a>
+                        </div>
+                        {%endfor%}
+                        {%else%}
+                        <div class="testimonial-item">
+                            <p>
+                                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+
+                            <div class="mx-auto text-center h1 text-primary p-3">
+                                <a href="{%url 'testimony' %}">Add Your Testimony</a>
+                            </div>
+                            </p>
+                        </div>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if testimonies%}
+        <div class="text-center text-white col-md-12 mx-auto">
+            <a class="text-white h6" href="{%url 'testimony' %}">-- See More & Add your Testimony --</a>
+        </div>
+        {%endif%}
+
+
+    </section>
+
+    <section id="contact" class="contact pt-3">
+        <div class="container">
+            <div class="section-title" data-aos="zoom-in" data-aos-delay="100">
+                <h2>Contact</h2>
+                <p class="text-lg-center text-justify">
+                    {% if Pagetag.contact_intro%}
+                    {{Pagetag.contact_intro}}
+                    {%else%}
+                    <i class="text-danger">contact intro </i>
+                    {%endif%}
+                </p>
+            </div>
+            <div data-aos="zoom-in" data-aos-delay="100">
+                <iframe style="border:0; width: 100%; height: 270px;"
+                    src="https://maps.google.com/maps?hl=en&amp;q=Ghana+(Rhematose international)&amp;ie=UTF8&amp;t=&amp;z=10&amp;iwloc=B&amp;output=embed"
+                    frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="row mt-5">
+
+                <div class="col-lg-4" data-aos="fade-right">
+                    <div class="info">
+                        <div class="address">
+                            <i class="icofont-google-map"></i>
+                            <h4>Location:</h4>
+                            {% if Pagetag.contact_address%}
+                            <p class="text-justify">
+                                {{Pagetag.contact_address}}
+                            </p>
+                            {%else%}
+                            <p>Accra Ghana, West Africa</p>
+                            {%endif%}
+                        </div>
+
+                        <div class="email">
+                            <i class="icofont-envelope"></i>
+                            <h4>Email:</h4>
+                            <p> rhematose@hotmail.com</p>
+                        </div>
+
+                        <div class="phone">
+                            <i class="icofont-phone"></i>
+                            <h4>Call:</h4>
+                            <p>+223 24478 2996</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-8 mt-5 mt-lg-0" data-aos="fade-up" data-aos-delay="100">
+
+                    <form action="." method="POST" role="form" class="pb-3">
+                        {% csrf_token %}
+                        <div>
+                            {% if form.field.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {% for error in form.field.error %}
+                                <p class="alert-danger">
+                                    {{ error }}
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 form-group">
+                                <input type="text" name="full_names" class="form-control" id="name"
+                                    placeholder="Your Name" data-rule="minlen:4"
+                                    data-msg="Please enter at least 4 chars" required />
+                                <div class="validate"></div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <input type="email" class="form-control" name="email" id="email"
+                                    placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email"
+                                    required />
+                                <div class="validate"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject"
+                                data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" required />
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="message" rows="5" data-rule="required"
+                                data-msg="Please write something for us" placeholder="Message"></textarea>
+                            <div class="validate"></div>
+                        </div>
+                        <div id="msg_sent">
+
+                        </div>
+                        <div class="text-center">
+                            <button id="contact_submit" type="submit" class="btn btn-outline-info">Send
+                                Message</button>
+                        </div>
+                    </form>
+                    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+                    <script type="text/javascript">
+                        $(document).ready(function (event) {
+                            $(document).on('click', '#contact_submit', function (event) {
+                                event.preventDefault();
+                                document.getElementById('contact_submit').innerHTML = "Sending...";
+                                document.getElementById('contact_submit').className = "btn btn-info disabled";
+                                var full_names = document.querySelector("input[name=full_names]").value;
+                                var email = document.querySelector("input[name=email]").value;
+                                var subject = document.querySelector("input[name=subject]").value;
+                                var message = document.querySelector("textarea[name=message]").value;
+                                console.log(full_names,
+                                    email,
+                                    subject,
+                                    message)
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/',
+                                    data: {
+                                        'full_names': full_names,
+                                        'email': email,
+                                        'subject': subject,
+                                        'message': message,
+                                        'csrfmiddlewaretoken': '{{ csrf_token}}'
+                                    },
+                                    dataType: 'json',
+                                    success: function (response) {
+                                        document.getElementById('contact_submit').innerHTML = "Send Message";
+                                        document.getElementById('contact_submit').className = "btn btn-outline-info";
+                                        document.getElementById('contact_submit').innerHTML = "Message Sent";
+                                        var full_names = document.querySelector("input[name=full_names]").value = '';
+                                        var email = document.querySelector("input[name=email]").value = '';
+                                        var subject = document.querySelector("input[name=subject]").value = '';
+                                        var message = document.querySelector("textarea[name=message]").value = '';
+                                        $('#msg_sent').html(response['form'])
+                                        console.log($('#smsg_sent').html(response['form']));
+                                    },
+                                    error: function (rs, e) {
+                                        console.log(rs.responseText);
+                                    },
+                                });
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+{% block extra_scripts %}
+<script>
+    showDetail = () => {
+        document.getElementById('word_for_today_less').className = "d-none";
+        document.getElementById('word_for_today_detail').className = "";
+    };
+    showLess = () => {
+        document.getElementById('word_for_today_detail').className = "d-none";
+        document.getElementById('word_for_today_less').className = "";
+    };
+</script>
+{% endblock extra_scripts %}
+
+
+{% endblock content %}

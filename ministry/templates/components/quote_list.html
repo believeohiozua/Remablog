@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% load social_share %}
+{% block content %}
+<section id="quotes" class="services section-bg" style="padding-top: 7em;">
+    <div class="container" data-aos="fade-in" data-aos-delay="200">
+
+        <div class="section-title">
+            <p class="h2">SPECIAL QUOTES </p>
+            <sub class="h6"><i>by Prophet Phrancis Kingson</i></sub>
+            <p class="pt-2 text-justify">
+                {% if Pagetag.special_quotes_intro%}
+                {{Pagetag.special_quotes_intro|truncatechars:250}}
+                {%else%}
+                <br> <i class="text-danger">special quotes intro</i>
+                {%endif%}
+            <p class="h6 text-center text-info">
+                <i>
+                    (Click on the Side Photo to see Details)
+                </i>
+            </p>
+            </p>
+        </div>
+        <div class="row">
+            {% if quote_list%}
+            {% for quotes in quote_list %}
+            <div class="col-lg-4 col-md-6">
+                <div class="icon-box">
+                    <div class="icon">
+                        <a href="{{quotes.get_absolute_url}}">
+                            <img src="
+                            {%if quotes.picture%}
+                            {{quotes.picture.url}}
+                            {%else%}
+                            {% static 'images/prophet.jpg'%}
+                            {%endif%}
+                            " height="50" width="50" id="quote_img" class="rounded-circle" alt="First slide" />
+                        </a>
+                    </div>
+                    <p class="description border-left text-left pl-1 text-dark">
+                        {{quotes.quote|truncatechars:200}}
+                    </p>
+                </div>
+            </div>
+            {%endfor%}
+            {%else%}
+            <div class="mx-auto text-center h4 text-success p-3">
+                Quotes will be avalible Soon!
+            </div>
+            {%endif%}
+
+
+        </div>
+
+    </div>
+</section>
+{% endblock content %}

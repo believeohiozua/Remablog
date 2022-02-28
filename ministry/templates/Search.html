@@ -1,0 +1,76 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block content %}
+
+<div class="footer-newsletter text-center" id="#search_sec" style="padding-top: 7em;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <p class="h3">Search</p>
+                <p class="h6">Make a Quick Search Through Our Archives</p>
+                <form action="/search/" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="search" class="form-control">
+                    <label for="opt">Select Category</label>
+                    <select name="opt" id="opt" class="form-control mx-auto col-6">
+                        <option value="devotion">Devotion</option>
+                        <option value="quotes">Quotes</option>
+                        <option value="testimonies">Testimonies</option>
+                        <option value="course">Course</option>
+                        <option value="seminar">Seminar</option>
+                        <option value="workshop">Workshop</option>
+                    </select>
+                    <div class="py-2">
+                        <button type="submit" id="submit_btn" class="btn btn-outline-info">
+                            Search
+                        </button>
+                    </div>
+                </form>
+
+
+
+                <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+                <script type="text/javascript">
+                    $(document).ready(function (event) {
+                        $(document).on('click', '#submit_btn', function (event) {
+                            event.preventDefault();
+                            document.getElementById('submit_btn').innerHTML = "Seaching...";
+                            document.getElementById('submit_btn').className = "btn btn-info disabled";
+                            var search = document.querySelector("input[name=search]").value;
+                            var opt = document.querySelector("select[name=opt]").value;
+                            $.ajax({
+                                type: 'POST',
+                                url: '/search/',
+                                data: {
+                                    'search': search,
+                                    'opt': opt,
+                                    'csrfmiddlewaretoken': '{{ csrf_token}}'
+                                },
+                                dataType: 'json',
+                                success: function (response) {
+                                    document.getElementById('submit_btn').innerHTML = "Search"
+                                    document.getElementById('submit_btn').className = "btn btn-outline-info"
+                                    $('#search-section').html(response['form'])
+                                    console.log($('#search-section').html(response['form']));
+                                },
+                                error: function (rs, e) {
+                                    console.log(rs.responseText);
+                                },
+                            });
+                        });
+                    });
+                </script>
+
+            </div>
+            <div class="col-lg-12 py-5" data-aos="zoom-in" data-aos-delay="100" id="search-section">
+                {% include 'search_section.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,14 @@
+{%load static%}
+{% if  request.path ==  devotional.get_absolute_url %}
+<div class="col-10 mx-auto">
+    <ul class="border-top border-bottom border-info" style="list-style: none; border-radius: 10px;">
+        <li class="text-left mx-auto">
+            <b class="h6 font-weight-bold">{{full_names|title}}</b>
+            <br>
+            <small class="">
+                {{content}}
+            </small>
+        </li>
+    </ul>
+</div>
+{%endif%}

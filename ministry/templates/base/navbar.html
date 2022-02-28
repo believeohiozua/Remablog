@@ -1,0 +1,34 @@
+{%load static%}
+<header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+        <a href="/" class="logo mr-auto"><img src="{% static 'images/logo.jpg'%}" alt="" class="img-fluid"></a>
+        <nav class="nav-menu d-none d-lg-block">
+            <ul>
+                <li id="len1" class="hoverable active"><a href="/">Home</a></li>
+                <li id="len2" class="hoverable"><a href="/#about">About</a></li>
+                <li id="len3" class="hoverable"><a href="{%url 'devotional' %}">Devotion</a></li>
+                <li id="len4" class="hoverable"><a href="{%url 'quotes' %}">Quotes</a></li>
+                <li id="len5" class="hoverable"><a href="{%url 'testimony' %}">Testimonies</a></li>
+                <li id="len6" class="hoverable drop-down"><a href="">Programmes</a>
+                    <ul>
+                        <li><a href="{%url 'programme' %}">See All</a></li>
+                        <li><a href="/#programme">Course</a></li>
+                        <li><a href="/#programme">Seminar</a></li>
+                        <li><a href="/#programme">Workshop</a></li>
+                        <li><a href="/#about">Messages</a></li>
+                        {% if request.user.is_authenticated and  request.user.is_staff  %}
+                        <li class="drop-down text-danger"><a href="#">Administration</a>
+                            <ul>
+                                <li class="text-center mx-auto">
+                                </li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+                <li id="len7" class="hoverable"><a href="/#contact">Contact</a></li>
+                <li id="len8" class="hoverable"><a href="/search/">Search</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>

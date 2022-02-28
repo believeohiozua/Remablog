@@ -1,0 +1,87 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% load social_share %}
+{% block content %}
+
+<section id="testimonials" class="testimonials section-bg mx-auto" style="padding-top: 8.5em;">
+    <div class="container" data-aos="fade-right">
+        <div class="text-center card-header p-1 rounded shadow text-white border-bottom">
+            <div class="section-title" data-aos="fade-right">
+                <h2 class="text-white">TESTIMONIES</h2>
+                {% if Pagetag.testimony_intro%}
+                {{Pagetag.testimony_intro}}
+                {%else%}
+                <p><i>We Overcame by the Blood of the Lamb and by the words of our Testimonies</i></p>
+                {%endif%}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                <div class="">
+                    <div class="testimonial-item">
+                        <p>
+                            <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                            {{testimony.your_testimony}}
+
+                            <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                        </p>
+                        <img src="
+                        {%if testimony.add_a_photo%}
+                        {{testimony.add_a_photo.url}}
+                        {%else%}                           
+                        {% static 'images/logo.jpg'%}
+                        {%endif%}
+                        " class="testimonial-img" alt="">
+                        <a href="{{testimony.get_absolute_url}}" class="text-white">
+                            <h3>{{testimony.full_names}}</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container py-3 d-block">
+    <div class="row">
+        <div class="mx-auto">
+            <div class="text-center">
+                <footer class="mx-auto text-center pb-3">
+                    <div class="text-center text-white col-md-12 mx-auto">
+                        <a class="text-info h6" href="{%url 'testimony' %}">-- See More & Add your own Testimony --</a>
+                    </div>
+                    <hr>
+                    <table class="float-left">
+                        <tr class="row">
+                            &ensp;&ensp;<td class="text-secondary pl-5">Share <i class="la la-share"></i>
+                            </td>
+                            <td>&ensp;</td>
+                            <td class="text-small">
+                                {% post_to_facebook testimony.get_absolute_url '<i class="text-small btn btn-primary btn-xs la la-facebook"></i>'%}
+                            </td>
+                            <td>&ensp;</td>
+                            <td class="text-small">
+                                {% post_to_twitter 'New post: {{testimony.your_testimony}} @' testimony.get_absolute_url '<i class="btn btn-info btn-xs la la-twitter"></i>'%}
+                            </td>
+                            <td>&ensp;</td>
+                            <td class="text-small">
+                                {% post_to_linkedin testimony.detail|striptags|truncatechars:200  testimony.get_absolute_url '<i class="btn btn-primary btn-xs la la-linkedin"></i>' %}
+                            </td>
+                            <td>&ensp;</td>
+                            <td class="text-small"> <a
+                                    href="whatsapp://send?text=*Read this Testimony and be Blessed :* {{testimony.your_testimony|striptags|truncatechars:450}} See More@ http://www.rhematose.org{{testimony.get_absolute_url}}"
+                                    data-action="share/whatsapp/share" target="_blank"> <i
+                                        class="btn btn-success btn-xs la la-whatsapp"></i>
+                                </a>
+                            </td>
+                            <td>&ensp;</td>
+                        </tr>
+                    </table>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

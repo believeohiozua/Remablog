@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% load social_share %}
+{% block content %}
+
+<div class="container" style="padding-top: 7em;">
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <h6 class="font-weight-bold py-1 text-center h3">{{programme.title|upper}}</h6>
+            <div class="mx-auto text-center border-bottom pb-2">
+                <img src=" {%if programme.prog_image%}
+            {{programme.prog_image.url}}
+            {%else%}
+            {% static 'images/logo.jpg' %}
+            {%endif%}" class="img-fluid" id="" alt="">
+            </div>
+        </div>
+        <div class="col-md-10 mx-auto card-header rounded pt-2">
+            <p class="text-justify"> {{programme.detail|safe}}</p>
+        </div>
+
+        <footer class="mx-auto text-center pb-3">
+            <hr>
+            <table class="float-left">
+                <tr class="row">
+                    &ensp;&ensp;<td class="text-secondary pl-5">Share <i class="la la-share"></i>
+                    </td>
+                    <td>&ensp;</td>
+                    <td class="text-small">
+                        {% post_to_facebook programme.get_absolute_url '<i class="text-small btn btn-primary btn-xs la la-facebook"></i>'%}
+                    </td>
+                    <td>&ensp;</td>
+                    <td class="text-small">
+                        {% post_to_twitter 'New post: {{programme.title}} @' programme.get_absolute_url '<i class="btn btn-info btn-xs la la-twitter"></i>'%}
+                    </td>
+                    <td>&ensp;</td>
+                    <td class="text-small">
+                        {% post_to_linkedin programme.detail|striptags|truncatechars:200 programme.get_absolute_url '<i class="btn btn-primary btn-xs la la-linkedin"></i>' %}
+                    </td>
+                    <td>&ensp;</td>
+                    <td class="text-small"> <a
+                            href="whatsapp://send?text=*Rhematose Intl. Presents {{programme.title}}:* {{programme.detail|striptags|truncatechars:450}} See More@ http://www.rhematose.org{{programme.get_absolute_url}}"
+                            data-action="share/whatsapp/share" target="_blank"> <i
+                                class="btn btn-success btn-xs la la-whatsapp"></i>
+                        </a>
+                    </td>
+                    <td>&ensp;</td>
+                </tr>
+            </table>
+        </footer>
+    </div>
+</div>
+
+{% endblock content %}

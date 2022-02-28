@@ -1,0 +1,189 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% load social_share %}
+{% load pagination_tags %}
+{% block content %}
+
+
+<section id="testimonials" class="testimonials section-bg mx-auto" style="padding-top: 8.5em;">
+    <div class="container" data-aos="fade-right">
+        <div class="text-center card-header p-1 rounded shadow text-white border-bottom">
+            <div class="section-title" data-aos="fade-right">
+                <h2 class="text-white">TESTIMONIES</h2>
+                {% if Pagetag.testimony_intro%}
+                {{Pagetag.testimony_intro}}
+                {%else%}
+                <p><i>We Overcame by the Blood of the Lamb and by the words of our Testimonies</i></p>
+                {%endif%}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                <div class="">
+                    {% if testimony_list%}
+                    {%for testimony in testimony_list%}
+                    <div class="testimonial-item">
+                        <p>
+                            <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                            {{testimony.your_testimony|truncatechars:350}}
+                            <a href="{{testimony.get_absolute_url}}" class="text-info">
+                                see more..
+                            </a>
+                            <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                        </p>
+                        <img src="
+                        {%if testimony.add_a_photo%}
+                        {{testimony.add_a_photo.url}}
+                        {%else%}                           
+                        {% static 'images/logo.jpg'%}
+                        {%endif%}
+                        " class="testimonial-img" alt="">
+                        <a href="{{testimony.get_absolute_url}}" class="text-white">
+                            <h3>{{testimony.full_names}}</h3>
+                        </a>
+                    </div>
+                    {%endfor%}
+                    {%else%}
+                    <div class="testimonial-item">
+                        <p>
+                            <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+
+                        <div class="mx-auto text-center h1 text-primary p-3">
+                            <a href="{%url 'testimony' %}">Add Your Testimony</a>
+                        </div>
+                        </p>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="text-center text-white font-weight-bold col-md-12">
+                {% if testimonies%} <a class="text-info font-weight-bold" href="">SEE MORE...</a> {%endif%}
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-3 d-block">
+    <div class="row">
+        <div class="mx-auto">
+            <div class="  text-center">
+                {% paginate %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mt-5 mt-lg-0 mx-auto" data-aos="fade-up" data-aos-delay="100">
+
+            <img src="" alt="" class="img">
+
+            <form action="{%url 'testimony' %}" method="POST" role="form" class="pb-3" id="testimony_form"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row">
+                    {% if testimony_form.field.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in testimony_form.field.error %}
+                        <p class="alert-danger">
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <div class="col-md-6 form-group">
+                        {{ testimony_form.full_names|add_class:"form-control"|attr:"placeholder:Full Names" }}
+                    </div>
+                    <div class="col-md-6 form-group">
+                        {{ testimony_form.phone_number|add_class:"form-control"|attr:"placeholder:Phone Number" }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6 form-group">
+                        {{ testimony_form.email|add_class:"form-control"|attr:"placeholder:email"|attr:"required" }}
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <!-- <small>add a photograph (optional) </small> -->
+                        {{testimony_form.add_a_photo}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ testimony_form.your_testimony|add_class:"form-control"|attr:"placeholder:Your Testimony"|attr:"required" }}
+                </div>
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token}}">
+
+                <div id="msg_sent">
+                    {% include "../search_section.html" %}
+                </div>
+                <div class="text-center">
+                    <button id="testimony_submit" type="submit" class="btn btn-outline-info">Submit
+                    </button>
+                </div>
+            </form>
+            <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+            <script type="text/javascript">
+                $(document).ready(function (event) {
+                    $(document).on('submit', '#testimony_form', function (event) {
+                        event.preventDefault();
+                        document.getElementById('testimony_submit').innerHTML = "Sending...";
+                        document.getElementById('testimony_submit').className = "btn btn-info disabled";
+                        var full_names = document.querySelector("input[name=full_names]").value;
+                        var email = document.querySelector("input[name=email]").value;
+                        var phone_number = document.querySelector("input[name=phone_number]").value;
+                        var your_testimony = document.querySelector("textarea[name=your_testimony]").value;
+                        var add_a_photo = document.querySelector("input[name=add_a_photo]").value;
+                        function previewFile(img_input) {
+                            var file = document.querySelector(img_input).files[0]; //sames as here
+                            file.height = "512";
+                            file.width = "512";
+                            var reader = new FileReader();
+                            reader.onloadend = function () {
+                                localStorage.setItem('imgInput', reader.result)
+                            }
+                        }
+                        previewFile('input[name=add_a_photo]');
+
+                        console.log(full_names,
+                            email,
+                            phone_number,
+                            your_testimony,
+                            add_a_photo)
+                        $.ajax({
+                            type: 'POST',
+                            url: '/testimony/',
+                            enctype: "multipart/form-data",
+                            data: {
+                                'full_names': full_names,
+                                'email': email,
+                                'phone_number': phone_number,
+                                'your_testimony': your_testimony,
+                                'add_a_photo': localStorage.getItem('imgInput'),
+                                'csrfmiddlewaretoken': '{{ csrf_token}}'
+                            },
+                            dataType: 'json',
+                            success: function (response) {
+                                document.getElementById('testimony_submit').innerHTML = "Submit";
+                                document.getElementById('testimony_submit').className = "btn btn-outline-info";
+                                var full_names = document.querySelector("input[name=full_names]").value = '';
+                                var email = document.querySelector("input[name=email]").value = '';
+                                var phone_number = document.querySelector("input[name=phone_number]").value = '';
+                                var your_testimony = document.querySelector("textarea[name=your_testimony]").value = '';
+                                var add_a_photo = document.querySelector("input[name=add_a_photo]").value = '';
+                                $('#msg_sent').html(response['form'])
+                                console.log($('#smsg_sent').html(response['form']));
+                            },
+                            error: function (rs, e) {
+                                console.log(rs.responseText);
+                            },
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock content %}

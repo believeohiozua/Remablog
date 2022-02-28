@@ -1,0 +1,86 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% load social_share %}
+{% load pagination_tags %}
+{% block content %}
+
+<div style="padding-top: 6em;">
+    <section id="devotion" class="py-3 border-bottom" style="background-color: rgb(242 243 225 / 38%);">
+        <div class="container text-justify">
+            <p class="h4 mx-auto text-center">
+                <u>SPIRIT DIVINE DEVOTIONAL</u>
+            </p>
+            {% if devotional_list %}
+            {% for devotional in devotional_list %}
+            <div class="row content py-3 border-bottom shadow" style="border-radius: 15px;;">
+                <div class="col-lg-6 mx-auto text-center" data-aos="fade-right" data-aos-delay="100">
+                    <ul style="list-style: none;">
+
+                        <p class="text-center">
+                            <span>BY:{{devotional.user.first_name|upper}} {{devotional.user.last_name|upper}}
+                            </span>
+                            <br>
+                            <small>{{devotional.date}}</small>
+                        </p>
+                        <img src="
+                                {%if devotional.caption_picture%}
+                                {{devotional.caption_picture.url}}
+                                {%else%}
+                                {% static 'images/badge.png'%}
+                                {%endif%}
+                                " alt="" height="140" width="200" style="border-radius: 15px;">
+
+                        <li class="h4 text-center text-body"><b><a href="{{devotional.get_absolute_url}}"
+                                    class="text-dark">{{devotional.title|upper}}</a></b></li>
+                        {% if devotional.bible_reading %}
+                        <li class="h6 text-center text-body"><b>BIBLE READING: </b>{{devotional.bible_reading}}</li>
+                        {%endif%}
+                        {% if devotional.memory_verse %}
+                        <li class="h6 text-center text-body"><b>MEMORY VERSE: </b>{{devotional.memory_verse}}</li>
+                        {%endif%}
+                        <li class="h6 text-center">
+                            <small>
+                                __<i class="la la-eye"></i>
+                                Read by {{ devotional.view_count }} Person{{devotional.view_count|pluralize}}__
+                            </small>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 pt-4 pt-lg-0 border-left" data-aos="fade-left" data-aos-delay="200">
+                    <p>
+                        {{devotional.devotion|safe|truncatechars:900}}
+                        <a href="{{devotional.get_absolute_url}}" class="text-info font-weight-bold">See more...</a>
+                    </p>
+
+                </div>
+            </div>
+            {%endfor%}
+            {%else%}
+            <div class="text-center">
+                <img src="{% static 'images/badge.png'%}" alt="" height="140" width="200">
+                <p class="h5 text-center text-info font-italic">Devotional will be made avalible Soon!</p>
+                <div class="h1 mx-auto text-center text-info col-12 my-auto p-5">
+                    <i class="spinner-grow"></i>
+                </div>
+                <hr>
+            </div>
+            {%endif%}
+        </div>
+</div>
+</section>
+<div class="container py-3 d-block">
+    <div class="row">
+        <div class="mx-auto">
+            <div class="  text-center">
+
+                {% paginate %}
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+{% endblock content %}
